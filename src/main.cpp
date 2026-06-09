@@ -20,8 +20,8 @@ ez::Drive chassis(
 //  - you should get positive values on the encoders going FORWARD and RIGHT
 // - `2.75` is the wheel diameter
 // - `4.0` is the distance from the center of the wheel to the center of the robot
-// ez::tracking_wheel horiz_tracker(8, 2.75, 4.0);  // This tracking wheel is perpendicular to the drive wheels (port, wheel diameter, offset from traking center)
-// ez::tracking_wheel vert_tracker(9, 2.75, 4.0);   // This tracking wheel is parallel to the drive wheels
+ez::tracking_wheel horiz_tracker(-20, 2, 4.65);  // This tracking wheel is perpendicular to the drive wheels (port, wheel diameter, offset from traking center)
+ez::tracking_wheel vert_tracker(-7, 2, .025);   // This tracking wheel is parallel to the drive wheels
 
 /**
  * Runs initialization code. This occurs as soon as the program is started.
@@ -40,7 +40,7 @@ void initialize() {
   // Look at your horizontal tracking wheel and decide if it's in front of the midline of your robot or behind it
   //  - change `back` to `front` if the tracking wheel is in front of the midline
   //  - ignore this if you aren't using a horizontal tracker
-  // chassis.odom_tracker_back_set(&horiz_tracker);
+  chassis.odom_tracker_back_set(&horiz_tracker);
   // Look at your vertical tracking wheel and decide if it's to the left or right of the center of the robot
   //  - change `left` to `right` if the tracking wheel is to the right of the centerline
   //  - ignore this if you aren't using a vertical tracker
@@ -116,12 +116,17 @@ void competition_initialize() {
  * from where it left off.
  */
 void autonomous() {
+  chassis.odom_xyt_set(0_in, 0_in, 0_deg);   //sets odom to 0,0,0
    master.rumble(".");  
   chassis.pid_targets_reset();                // Resets PID targets to 0
   chassis.drive_imu_reset();                  // Reset gyro position to 0
   chassis.drive_sensor_reset();               // Reset drive sensors to 0
   chassis.odom_xyt_set(0_in, 0_in, 0_deg);    // Set the current position, you can start at a specific position with this
   chassis.drive_brake_set(MOTOR_BRAKE_HOLD);  // Set motors to hold.  This helps autonomous consistency
+  
+  printf("X: %f\n", chassis.odom_x_get()); //print the coordinates
+printf("Y: %f\n", chassis.odom_y_get());
+printf("A: %f\n", chassis.odom_theta_get());
 
 
   /*
@@ -171,6 +176,11 @@ void ez_screen_task() {
                                "\ny: " + util::to_string_with_precision(chassis.odom_y_get()) +
                                "\na: " + util::to_string_with_precision(chassis.odom_theta_get()),
                            1);  // Don't override the top Page line
+
+                           printf("X: %f\n", chassis.odom_x_get()); //print the coordinates for odom 
+printf("Y: %f\n", chassis.odom_y_get());
+printf("A: %f\n", chassis.odom_theta_get());
+
 
           // Display all trackers that are being used
           screen_print_tracker(chassis.odom_tracker_left, "l", 4);
