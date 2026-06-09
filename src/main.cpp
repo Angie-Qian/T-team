@@ -33,7 +33,7 @@ void initialize() {
   // Print our branding over your terminal :D
   ez::ez_template_print();
   pros::lcd::initialize();
-    pros::lcd::print(0, "UPLOAD TEST 4");
+  pros::lcd::print(0, "UPLOAD TEST 6");
 
   pros::delay(1000);  // Stop the user from doing anything while legacy ports configure
 
