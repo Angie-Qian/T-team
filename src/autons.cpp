@@ -60,11 +60,11 @@ void drive_example() {
   chassis.pid_drive_set(24_in, DRIVE_SPEED, true);
   chassis.pid_wait();
 
-  chassis.pid_drive_set(-12_in, DRIVE_SPEED);
-  chassis.pid_wait();
+  // chassis.pid_drive_set(-12_in, DRIVE_SPEED);
+  // chassis.pid_wait();
 
-  chassis.pid_drive_set(-12_in, DRIVE_SPEED);
-  chassis.pid_wait();
+  // chassis.pid_drive_set(-12_in, DRIVE_SPEED);
+  // chassis.pid_wait();
 }
 
 ///
@@ -74,7 +74,7 @@ void turn_example() {
   // The first parameter is the target in degrees
   // The second parameter is max speed the robot will drive at
 
-  chassis.pid_turn_set(180_deg, TURN_SPEED);
+  chassis.pid_turn_set(90_deg, TURN_SPEED);
   chassis.pid_wait();
 
 //   chassis.pid_turn_set(45_deg, TURN_SPEED);
@@ -91,17 +91,37 @@ void drive_and_turn() {
   chassis.pid_drive_set(24_in, DRIVE_SPEED, true);
   chassis.pid_wait();
 
-  chassis.pid_turn_set(45_deg, TURN_SPEED);
+  chassis.pid_turn_set(90_deg, TURN_SPEED);
   chassis.pid_wait();
 
-  chassis.pid_turn_set(-45_deg, TURN_SPEED);
-  chassis.pid_wait();
+  //   chassis.pid_drive_set(24_in, DRIVE_SPEED, true);
+  // chassis.pid_wait();
 
-  chassis.pid_turn_set(0_deg, TURN_SPEED);
-  chassis.pid_wait();
+  //  chassis.pid_turn_set(180_deg, TURN_SPEED);
+  // chassis.pid_wait();
 
-  chassis.pid_drive_set(-24_in, DRIVE_SPEED, true);
-  chassis.pid_wait();
+  // chassis.pid_drive_set(24_in, DRIVE_SPEED, true);
+  // chassis.pid_wait();
+
+  //  chassis.pid_turn_set(270_deg, TURN_SPEED);
+  // chassis.pid_wait();
+
+  // chassis.pid_drive_set(24_in, DRIVE_SPEED, true);
+  // chassis.pid_wait();
+  
+  //  chassis.pid_turn_set(0_deg, TURN_SPEED);
+  // chassis.pid_wait();
+
+  //stop 
+
+  // chassis.pid_turn_set(-45_deg, TURN_SPEED);
+  // chassis.pid_wait();
+
+  // chassis.pid_turn_set(0_deg, TURN_SPEED);
+  // chassis.pid_wait();
+
+  // chassis.pid_drive_set(-24_in, DRIVE_SPEED, true);
+  // chassis.pid_wait();
 }
 
 ///
@@ -247,11 +267,11 @@ void odom_drive_example() {
   chassis.pid_odom_set(24_in, DRIVE_SPEED, true);
   chassis.pid_wait();
 
-  chassis.pid_odom_set(-12_in, DRIVE_SPEED);
-  chassis.pid_wait();
+  // chassis.pid_odom_set(-12_in, DRIVE_SPEED);
+  // chassis.pid_wait();
 
-  chassis.pid_odom_set(-12_in, DRIVE_SPEED);
-  chassis.pid_wait();
+  // chassis.pid_odom_set(-12_in, DRIVE_SPEED);
+  // chassis.pid_wait();
 }
 
 ///
@@ -289,13 +309,18 @@ void odom_pure_pursuit_wait_until_example() {
 // Odom Boomerang
 ///
 void odom_boomerang_example() {
-  chassis.pid_odom_set({{0_in, 24_in, 45_deg}, fwd, DRIVE_SPEED},
-                       true);
+// Drive to top-left
+  chassis.pid_odom_set({{0_in, 24_in, 45_deg}, fwd, DRIVE_SPEED}, true);
   chassis.pid_wait();
-
-  chassis.pid_odom_set({{0_in, 0_in, 0_deg}, rev, DRIVE_SPEED},
-                       true);
-  chassis.pid_wait();
+  // Drive to top-right
+// chassis.pid_odom_set({{24_in, 24_in, 90_deg}, fwd, DRIVE_SPEED}, true);
+//  chassis.pid_wait();
+// // Drive to bottom-right
+// chassis.pid_odom_set({{24_in, 0_in, 180_deg}, fwd, DRIVE_SPEED}, true);
+//  chassis.pid_wait();
+// // Return to start
+// chassis.pid_odom_set({{0_in, 0_in, 270_deg}, fwd, DRIVE_SPEED}, true); 
+//  chassis.pid_wait();
 }
 
 ///

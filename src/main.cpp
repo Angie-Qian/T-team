@@ -33,7 +33,7 @@ void initialize() {
   // Print our branding over your terminal :D
   ez::ez_template_print();
   pros::lcd::initialize();
-  pros::lcd::print(0, "UPLOAD TEST 6");
+  pros::lcd::print(0, "UPLOAD TEST 1");
 
   pros::delay(1000);  // Stop the user from doing anything while legacy ports configure
 
@@ -124,9 +124,6 @@ void autonomous() {
   chassis.odom_xyt_set(0_in, 0_in, 0_deg);    // Set the current position, you can start at a specific position with this
   chassis.drive_brake_set(MOTOR_BRAKE_HOLD);  // Set motors to hold.  This helps autonomous consistency
   
-  printf("X: %f\n", chassis.odom_x_get()); //print the coordinates
-printf("Y: %f\n", chassis.odom_y_get());
-printf("A: %f\n", chassis.odom_theta_get());
 
 
   /*
@@ -228,23 +225,7 @@ void ez_template_extras() {
     //   autonomous();
     //   chassis.drive_brake_set(preference);
     // }
-//HERE
-  //   if (master.get_digital(DIGITAL_B) && master.get_digital(DIGITAL_DOWN)) {
-  //   // Correct EZ-Template reset sequence
-  //   chassis.pid_targets_reset(); 
-  //   chassis.drive_brake_set(MOTOR_BRAKE_HOLD); 
-    
-  //   autonomous(); // Calls your routines
-    
-  //   chassis.drive_brake_set(MOTOR_BRAKE_COAST); 
 
-
-
-
-  //   // Allow PID Tuner to iterate
-  //   chassis.pid_tuner_iterate();
-  // }
-  //HERE
 
    if (master.get_digital(DIGITAL_B) && master.get_digital(DIGITAL_DOWN)) {
       pros::motor_brake_mode_e_t preference = chassis.drive_brake_get();
@@ -285,6 +266,8 @@ void ez_template_extras() {
  * task, not resume it from where it left off.
  */
 void opcontrol() {
+  bool show_odom = false;
+bool last_up = false;
   // This is preference to what you like to drive on
   while (true) {
 
@@ -296,6 +279,23 @@ void opcontrol() {
     chassis.opcontrol_arcade_standard(ez::SINGLE);
 
     pros::delay(ez::util::DELAY_TIME);
+
+//print odom coodrinates in pressing L1 button
+  bool current_up = master.get_digital(pros::E_CONTROLLER_DIGITAL_L1);
+
+if (current_up && !last_up) {
+    show_odom = !show_odom;
+}
+
+last_up = current_up;
+
+if (show_odom) {
+   pros::lcd::print(4, "X: %.2f", chassis.odom_x_get());
+pros::lcd::print(5, "Y: %.2f", chassis.odom_y_get());
+pros::lcd::print(6, "H: %.2f", chassis.odom_theta_get());
+} 
+
+
 
   // while (true) {
   //   // Gives you some extras to make EZ-Template ezier
