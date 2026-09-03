@@ -8,13 +8,15 @@
 // Chassis constructor
 ez::Drive chassis(
     // These are your drive motors, the first motor is used for sensing!
-    {-1, -2, -3},     // Left Chassis Ports (negative port will reverse it!)
-    {8, 9, 10},  // Right Chassis Ports (negative port will reverse it!) 
+    {-18, -19, -20},     // Left Chassis Ports (negative port will reverse it!)
+    {1, 2, 3},  // Right Chassis Ports (negative port will reverse it!) 
 
     4,      // IMU Port
     3.25,  // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
     450);   // Wheel RPM = cartridge * (motor gear / wheel gear)
 
+// pros::Motor l_lift(1); //lift motors
+// pros::Motor r_lift(-2);
 // Uncomment the trackers you're using here
 // - `8` and `9` are smart ports (making these negative will reverse the sensor)
 //  - you should get positive values on the encoders going FORWARD and RIGHT
@@ -29,13 +31,22 @@ ez::tracking_wheel vert_tracker(-7, 2, .025);   // This tracking wheel is parall
  * All other competition modes are blocked by initialize; it is recommended
  * to keep execution time for this mode under a few seconds.
  */
+
+//  void set_lift(int input) { //function to move lift motors
+//   l_lift.move(input);
+//   r_lift.move(input);
+// }
+
 void initialize() {
   // Print our branding over your terminal :D
   ez::ez_template_print();
   pros::lcd::initialize();
-  pros::lcd::print(0, "UPLOAD TEST 1");
+  pros::lcd::print(0, "UPLOAD TEST 2"); //which test it is
+  // l_lift.tare_position();
 
   pros::delay(1000);  // Stop the user from doing anything while legacy ports configure
+
+
 
   // Look at your horizontal tracking wheel and decide if it's in front of the midline of your robot or behind it
   //  - change `back` to `front` if the tracking wheel is in front of the midline
@@ -265,7 +276,23 @@ void ez_template_extras() {
  * operator control task will be stopped. Re-enabling the robot will restart the
  * task, not resume it from where it left off.
  */
+
+ //lift code:
+//  int lift_target=0;
+
+//  void lift_task(){
+//  lift.tare_position();  //start it at 0
+
+//  while(true){
+//  liftPID.target_set(lift_target); //tell it waht the target anle is
+//  double power = liftPID.compute(lift.get_position()); //find power based on motor position
+// lift.move(power); //motors move to that power
+//  pros::delay(20);
+
+//  }
+ 
 void opcontrol() {
+
   bool show_odom = false;
 bool last_up = false;
   // This is preference to what you like to drive on
@@ -317,8 +344,16 @@ pros::lcd::print(6, "H: %.2f", chassis.odom_theta_get());
     // chassis.opcontrol_arcade_flipped(ez::SPLIT);    // Flipped split arcade
     // chassis.opcontrol_arcade_flipped(ez::SINGLE);   // Flipped single arcade
   // . . .
+//LIFT CODE
+// if (master.get_digital(DIGITAL_L1)) {
+//       liftPID.target_set(500);
+//     }
+//     else if (master.get_digital(DIGITAL_L2)) {
+//       liftPID.target_set(0);
+//     }
+//     set_lift(liftPID.compute(l_lift.get_position()));
 
-
+    pros::delay(ez::util::DELAY_TIME);
   // . . .
 
     // . . .

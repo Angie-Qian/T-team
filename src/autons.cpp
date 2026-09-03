@@ -21,7 +21,7 @@ void default_constants() {
   chassis.pid_swing_constants_set(6.0, 0.0, 65.0);           // Swing constants
   chassis.pid_odom_angular_constants_set(6.5, 0.0, 52.5);    // Angular control for odom motions
   chassis.pid_odom_boomerang_constants_set(5.8, 0.0, 32.5);  // Angular control for boomerang motions
-
+// ez::PID liftPID{0.45, 0, 0, 0, "Lift"}; //lift pid constants
   // Exit conditions
   chassis.pid_turn_exit_condition_set(90_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
   chassis.pid_swing_exit_condition_set(90_ms, 3_deg, 250_ms, 7_deg, 500_ms, 500_ms);
@@ -278,10 +278,11 @@ void odom_drive_example() {
 // Odom Pure Pursuit
 ///
 void odom_pure_pursuit_example() {
-  // Drive to 0, 30 and pass through 6, 10 and 0, 20 on the way, with slew
-  chassis.pid_odom_set({{{6_in, 10_in}, fwd, DRIVE_SPEED},
-                        {{0_in, 20_in}, fwd, DRIVE_SPEED},
-                        {{0_in, 30_in}, fwd, DRIVE_SPEED}},
+  //  Drive to 0, 30 and pass through 6, 10 and 0, 20 on the way, with slew
+  chassis.pid_odom_set({{{0_in, 24_in}, fwd, DRIVE_SPEED},
+                        {{24_in, 24_in}, fwd, DRIVE_SPEED},
+                        {{36_in, 0_in}, fwd, DRIVE_SPEED},
+                        {{0_in, 0_in}, fwd, DRIVE_SPEED}},
                        true);
   chassis.pid_wait();
 
@@ -289,6 +290,18 @@ void odom_pure_pursuit_example() {
   chassis.pid_odom_set({{0_in, 0_in}, rev, DRIVE_SPEED},
                        true);
   chassis.pid_wait();
+  
+  // ORIGIONAL// Drive to 0, 30 and pass through 6, 10 and 0, 20 on the way, with slew
+  // chassis.pid_odom_set({{{6_in, 10_in}, fwd, DRIVE_SPEED},
+  //                       {{0_in, 20_in}, fwd, DRIVE_SPEED},
+  //                       {{0_in, 30_in}, fwd, DRIVE_SPEED}},
+  //                      true);
+  // chassis.pid_wait();
+
+  // // Drive to 0, 0 backwards
+  // chassis.pid_odom_set({{0_in, 0_in}, rev, DRIVE_SPEED},
+  //                      true);
+  // chassis.pid_wait();
 }
 
 ///
@@ -313,14 +326,14 @@ void odom_boomerang_example() {
   chassis.pid_odom_set({{0_in, 24_in, 45_deg}, fwd, DRIVE_SPEED}, true);
   chassis.pid_wait();
   // Drive to top-right
-// chassis.pid_odom_set({{24_in, 24_in, 90_deg}, fwd, DRIVE_SPEED}, true);
-//  chassis.pid_wait();
-// // Drive to bottom-right
-// chassis.pid_odom_set({{24_in, 0_in, 180_deg}, fwd, DRIVE_SPEED}, true);
-//  chassis.pid_wait();
-// // Return to start
-// chassis.pid_odom_set({{0_in, 0_in, 270_deg}, fwd, DRIVE_SPEED}, true); 
-//  chassis.pid_wait();
+chassis.pid_odom_set({{24_in, 24_in, 90_deg}, fwd, DRIVE_SPEED}, true);
+ chassis.pid_wait();
+// Drive to bottom-right
+chassis.pid_odom_set({{24_in, 0_in, 180_deg}, fwd, DRIVE_SPEED}, true);
+ chassis.pid_wait();
+// Return to start
+chassis.pid_odom_set({{0_in, 0_in, 270_deg}, fwd, DRIVE_SPEED}, true); 
+ chassis.pid_wait();
 }
 
 ///
